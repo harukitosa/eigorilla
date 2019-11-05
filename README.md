@@ -53,11 +53,11 @@ Not JWT token.
 ## URL structure BackEnd
 
 ```
-/post:{userID}  #User post.
+/post/:{userID}  #User post.
 
-/getTimeline #User get timeline date.
+/get/timeline #User get timeline date.
 
-/getUserPost:{userID} #User get their own post.
+/get/userpost/:{userID} #User get their own post.
 
-/alert:{userID} #User get alert date.
+/alert/:{userID} #User get alert date.
 ```
