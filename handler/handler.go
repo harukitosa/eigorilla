@@ -7,16 +7,15 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"os"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
 	// postgres
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/mattn/go-sqlite3"
 
 )
-	// _ "github.com/mattn/go-sqlite3"
+	// _ "github.com/jinzhu/gorm/dialects/postgres" "os"
 
 // DatabaseName has database name
 var DatabaseName string
@@ -48,10 +47,10 @@ func GenerateDate() string {
 
 // DBInit initialize your datebase and migrate.
 func DBInit() {
-	// DatabaseURL = "test.sqlite3"
-	// DatabaseName = "sqlite3"
-	DatabaseURL = os.Getenv("DATABASE_URL")
-	DatabaseName = "postgres"
+	DatabaseURL = "test.sqlite3"
+	DatabaseName = "sqlite3"
+	// DatabaseURL = os.Getenv("DATABASE_URL")
+	// DatabaseName = "postgres"
 
 	db, err := gorm.Open(DatabaseName, DatabaseURL)
 	if err != nil {
@@ -87,6 +86,8 @@ func WritePost(w http.ResponseWriter, r *http.Request) {
 		Sentence: post.Sentence,
 		Date: GenerateDate(),
 		UserID: userID,
+        UserPhotoURL: post.UserPhotoURL,
+        UserName: post.UserName,
 	})
 	if err != nil {
 		log.Println("Warning Error WritePost!!!!!!!!")

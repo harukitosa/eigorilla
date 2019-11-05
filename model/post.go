@@ -6,4 +6,6 @@ type Post struct {
 	Sentence string `json:"sentence"`
 	Date string `json:"date"`
 	UserID string `json:"userID"`
+    UserPhotoURL string `json:"userPhotoURL"`
+    UserName string `json:"userName"`
 }
