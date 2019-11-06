@@ -12,10 +12,11 @@ import (
 	"github.com/jinzhu/gorm"
 
 	// postgres
-	_ "github.com/mattn/go-sqlite3"
+    _ "github.com/jinzhu/gorm/dialects/postgres"
+    "os"
 
 )
-	// _ "github.com/jinzhu/gorm/dialects/postgres" "os"
+   //	_ "github.com/mattn/go-sqlite3
 
 // DatabaseName has database name
 var DatabaseName string
@@ -47,10 +48,10 @@ func GenerateDate() string {
 
 // DBInit initialize your datebase and migrate.
 func DBInit() {
-	DatabaseURL = "test.sqlite3"
-	DatabaseName = "sqlite3"
-	// DatabaseURL = os.Getenv("DATABASE_URL")
-	// DatabaseName = "postgres"
+	//DatabaseURL = "test.sqlite3"
+	//DatabaseName = "sqlite3"
+	DatabaseURL = os.Getenv("DATABASE_URL")
+	DatabaseName = "postgres"
 
 	db, err := gorm.Open(DatabaseName, DatabaseURL)
 	if err != nil {
