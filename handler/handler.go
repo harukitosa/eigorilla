@@ -6,25 +6,24 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
-    "os"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
 	// postgres
-   	_ "github.com/jinzhu/gorm/dialects/postgres"
-
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
-//	_ "github.com/mattn/go-sqlite3
 
+//_ "github.com/mattn/go-sqlite3"
 
 // DatabaseName has database name
 var DatabaseName string
 
 // DatabaseURL has database url
 var DatabaseURL string
-
 
 // GenerateID return UUID
 func GenerateID() string {
@@ -46,11 +45,10 @@ func GenerateDate() string {
 	return s
 }
 
-
 // DBInit initialize your datebase and migrate.
 func DBInit() {
-	//DatabaseURL = "test.sqlite3"
-	//DatabaseName = "sqlite3"
+	// DatabaseURL = "test.sqlite3"
+	// DatabaseName = "sqlite3"
 	DatabaseURL = os.Getenv("DATABASE_URL")
 	DatabaseName = "postgres"
 
@@ -83,13 +81,13 @@ func WritePost(w http.ResponseWriter, r *http.Request) {
 
 	userID := vars["userID"]
 
-	db.Create(&model.Post {
-		ID: GenerateID(),
-		Sentence: post.Sentence,
-		Date: GenerateDate(),
-		UserID: userID,
-        UserPhotoURL: post.UserPhotoURL,
-        UserName: post.UserName,
+	db.Create(&model.Post{
+		ID:           GenerateID(),
+		Sentence:     post.Sentence,
+		Date:         GenerateDate(),
+		UserID:       userID,
+		UserPhotoURL: post.UserPhotoURL,
+		UserName:     post.UserName,
 	})
 	if err != nil {
 		log.Println("Warning Error WritePost!!!!!!!!")
