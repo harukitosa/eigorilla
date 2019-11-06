@@ -7,16 +7,17 @@ import (
 	"log"
 	"net/http"
 	"time"
+    "os"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
 	// postgres
-    _ "github.com/jinzhu/gorm/dialects/postgres"
-    "os"
+   	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 )
-   //	_ "github.com/mattn/go-sqlite3
+//	_ "github.com/mattn/go-sqlite3
+
 
 // DatabaseName has database name
 var DatabaseName string
