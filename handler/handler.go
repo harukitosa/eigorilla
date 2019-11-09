@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,7 +19,7 @@ import (
 //sqlite3
 // _ "github.com/mattn/go-sqlite3"
 //Mode has two status PRODUCTION or DEPLOY
-var Mode string
+// var Mode string
 
 // DatabaseName has database name
 var DatabaseName string
@@ -43,11 +42,11 @@ func GenerateID() string {
 func DBInit() {
 	// Mode = "PRODUCTION"
 	// if Mode == "PRODUCTION" {
-	// 	DatabaseURL = "test.sqlite3"
-	// 	DatabaseName = "sqlite3"
+	DatabaseURL = "test.sqlite3"
+	DatabaseName = "sqlite3"
 	// } else if Mode == "DEPLOY" {
-	DatabaseURL = os.Getenv("DATABASE_URL")
-	DatabaseName = "postgres"
+	// 	DatabaseURL = os.Getenv("DATABASE_URL")
+	// 	DatabaseName = "postgres"
 	// }
 
 	db, err := gorm.Open(DatabaseName, DatabaseURL)
