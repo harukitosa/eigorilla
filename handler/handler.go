@@ -42,7 +42,7 @@ func GenerateID() string {
 
 // DBInit initialize your datebase and migrate.
 func DBInit() {
-	// Mode = "DEPLOY"
+	// Mode = "PRODUCTION"
 	// if Mode == "PRODUCTION" {
 	// 	DatabaseURL = "test.sqlite3"
 	// 	DatabaseName = "sqlite3"
