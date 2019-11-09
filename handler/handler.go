@@ -19,7 +19,6 @@ import (
 
 //sqlite3
 // _ "github.com/mattn/go-sqlite3"
-
 //Mode has two status PRODUCTION or DEPLOY
 var Mode string
 
