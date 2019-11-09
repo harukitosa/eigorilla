@@ -15,9 +15,10 @@ import (
 
 	// postgres
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	//sqlite3
-	_ "github.com/mattn/go-sqlite3"
 )
+
+//sqlite3
+// _ "github.com/mattn/go-sqlite3"
 
 //Mode has two status PRODUCTION or DEPLOY
 var Mode string
@@ -41,14 +42,14 @@ func GenerateID() string {
 
 // DBInit initialize your datebase and migrate.
 func DBInit() {
-	Mode = "DEPLOY"
-	if Mode == "PRODUCTION" {
-		DatabaseURL = "test.sqlite3"
-		DatabaseName = "sqlite3"
-	} else if Mode == "DEPLOY" {
-		DatabaseURL = os.Getenv("DATABASE_URL")
-		DatabaseName = "postgres"
-	}
+	// Mode = "DEPLOY"
+	// if Mode == "PRODUCTION" {
+	// 	DatabaseURL = "test.sqlite3"
+	// 	DatabaseName = "sqlite3"
+	// } else if Mode == "DEPLOY" {
+	DatabaseURL = os.Getenv("DATABASE_URL")
+	DatabaseName = "postgres"
+	// }
 
 	db, err := gorm.Open(DatabaseName, DatabaseURL)
 	if err != nil {
