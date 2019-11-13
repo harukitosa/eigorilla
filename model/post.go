@@ -6,6 +6,7 @@ type Post struct {
 	Sentence string `json:"sentence"`
 	Date     string `json:"date"`
 	UserID   string `json:"userID"`
+	RoomID   string `json:"roomID"`
 }
 
 //User is date
@@ -16,12 +17,22 @@ type User struct {
 	Profile     string `json:"profile"`
 }
 
-//SendPost is sent by json data
+//Room is room date
+type Room struct {
+	ID      string `json:"id" gorm:"PRIMARY_KEY"`
+	Date    string `json:"date"`
+	Title   string `json:"title"`
+	Explain string `json:"explain"`
+	UserID  string `json:"userID"`
+}
+
+//SendPost is sent by json data, not including database.
 type SendPost struct {
 	PostID       string `json:"postID"`
 	Sentence     string `json:"sentence"`
 	Date         string `json:"date"`
 	UserID       string `json:"userID"`
+	RoomID       string `json:"roomID"`
 	UserPhotoURL string `json:"userPhotoURL"`
 	UserName     string `json:"userName"`
 }

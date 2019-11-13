@@ -14,3 +14,5 @@ github.com/lib/pq
 github.com/lib/pq/hstore
 github.com/lib/pq/oid
 github.com/lib/pq/scram
+# github.com/mattn/go-sqlite3 v1.11.0
+github.com/mattn/go-sqlite3

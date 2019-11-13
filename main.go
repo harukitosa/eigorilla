@@ -25,6 +25,10 @@ func main() {
 	r.HandleFunc("/get/timeline", handler.GetTimeLine)
 	r.HandleFunc("/get/userpost/:{userID}", handler.GetUserPost)
 	r.HandleFunc("/post/login/:{userID}", handler.UserCheck)
+	r.HandleFunc("/post/room/:{userID}", handler.CreateRoom)
+	r.HandleFunc("/get/allroom", handler.GetRoomList)
+	r.HandleFunc("/get/oneroom/:{roomID}", handler.GetOneRoom)
+	r.HandleFunc("/get/roompost/:{roomID}", handler.GetRoomPost)
 	log.Printf("server start port localhost:" + port)
 	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(allowedOrigins, allowedMethods, allowedHeaders)(r)))
 

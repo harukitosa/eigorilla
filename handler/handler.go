@@ -3,13 +3,10 @@ package handler
 import (
 	"app/eigorilla/server/model"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
@@ -19,6 +16,7 @@ import (
 
 //sqlite3
 // _ "github.com/mattn/go-sqlite3"
+
 //Mode has two status PRODUCTION or DEPLOY
 // var Mode string
 
@@ -28,23 +26,12 @@ var DatabaseName string
 // DatabaseURL has database url
 var DatabaseURL string
 
-// GenerateID return UUID
-func GenerateID() string {
-	u, err := uuid.NewRandom()
-	if err != nil {
-		fmt.Println(err)
-		return "err"
-	}
-	uu := u.String()
-	return uu
-}
-
 // DBInit initialize your datebase and migrate.
 func DBInit() {
 	// Mode = "PRODUCTION"
 	// if Mode == "PRODUCTION" {
-	// DatabaseURL = "test.sqlite3"
-	// DatabaseName = "sqlite3"
+	// 	DatabaseURL = "test.sqlite3"
+	// 	DatabaseName = "sqlite3"
 	// } else if Mode == "DEPLOY" {
 	DatabaseURL = os.Getenv("DATABASE_URL")
 	DatabaseName = "postgres"
@@ -57,16 +44,8 @@ func DBInit() {
 	//残りのモデルはまだ入れてない。
 	db.AutoMigrate(&model.Post{})
 	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Room{})
 	defer db.Close()
-}
-
-// GenerateDate return Year Month Day Hour Minitues Seconds
-func GenerateDate() string {
-	const layout = "2006-01-02 15:04:05"
-	t := time.Now()
-	s := ""
-	s = t.Format(layout)
-	return s
 }
 
 // WritePost insert new post date.
@@ -87,6 +66,7 @@ func WritePost(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("json decode error" + error.Error() + "\n"))
 	}
 
+	log.Printf("postdata:%+v", post)
 	userID := vars["userID"]
 
 	db.Create(&model.Post{
@@ -94,6 +74,7 @@ func WritePost(w http.ResponseWriter, r *http.Request) {
 		Sentence: post.Sentence,
 		Date:     GenerateDate(),
 		UserID:   userID,
+		RoomID:   post.RoomID,
 	})
 
 	log.Printf("post:%v", post)
@@ -120,11 +101,45 @@ func GetTimeLine(w http.ResponseWriter, r *http.Request) {
 		sendPost.Sentence = posts[i].Sentence
 		sendPost.Date = posts[i].Date
 		sendPost.UserID = posts[i].UserID
+		sendPost.RoomID = posts[i].RoomID
 		var user model.User
 		db.Where(&model.User{ID: posts[i].UserID}).First(&user)
 		sendPost.UserPhotoURL = user.PhotoURL
 		sendPost.UserName = user.DisplayName
 		sendPosts = append(sendPosts, sendPost)
+	}
+	json.NewEncoder(w).Encode(sendPosts)
+}
+
+// GetRoomPost return all post data in the room
+func GetRoomPost(w http.ResponseWriter, r *http.Request) {
+	db, err := gorm.Open(DatabaseName, DatabaseURL)
+	if err != nil {
+		panic("We can't open database!（GetRoomPost）")
+	}
+	defer db.Close()
+	log.Println("GET : GetRoomPost")
+	vars := mux.Vars(r)
+	roomID := vars["roomID"]
+	var posts []model.Post
+	db.Where(&model.Post{RoomID: roomID}).Find(&posts)
+	//その後データベースからユーザーデータを取ってくる
+	var user model.User
+	//postのデータをすべて取った後userデータ総当り
+	var sendPosts []model.SendPost
+	if len(posts) != 0 {
+		db.Where(&model.User{ID: posts[0].UserID}).First(&user)
+		for i := 0; i < len(posts); i++ {
+			var sendPost model.SendPost
+			sendPost.PostID = posts[i].ID
+			sendPost.Sentence = posts[i].Sentence
+			sendPost.Date = posts[i].Date
+			sendPost.UserID = posts[i].UserID
+			sendPost.RoomID = posts[i].RoomID
+			sendPost.UserPhotoURL = user.PhotoURL
+			sendPost.UserName = user.DisplayName
+			sendPosts = append(sendPosts, sendPost)
+		}
 	}
 	json.NewEncoder(w).Encode(sendPosts)
 }
@@ -155,6 +170,7 @@ func GetUserPost(w http.ResponseWriter, r *http.Request) {
 			sendPost.Sentence = posts[i].Sentence
 			sendPost.Date = posts[i].Date
 			sendPost.UserID = posts[i].UserID
+			sendPost.RoomID = posts[i].RoomID
 			sendPost.UserPhotoURL = user.PhotoURL
 			sendPost.UserName = user.DisplayName
 			sendPosts = append(sendPosts, sendPost)
