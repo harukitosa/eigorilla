@@ -1,63 +1,11 @@
 # eigorilla
 
-## User Experience
-1. Users can meet people who study English.
-2. Talk with them and Practice use English.
+## eigorillaとは？
+ツイッターライクなWebアプリケーション
+投稿は英語のみ、英語学習者のためのアプリケーションです。
 
-## Value
-1. simple and easy.
-2. make English learning a habit.
+## source codeについて
+golangで立てたapiサーバーのコードです。
 
-## Function
+goriila/mux, handlers, gormなどのライブラリを使用しています。
 
-must
-1. login/logout
-2. post and comment and view my posts 
-
-should
-
-3. mix conversation examples from time to time.
-
-
-Not JWT token.
-
-
-### Front 
-* Vue.js or React
-
-* Material Design
-
-### Back
-* Golang
-
-### Auth
-* Firebase
-
-## URL structure FrontEnd
-
-
-```
-/ #landing page
-
-/timeline #view someone's posts
-
-/home #view your post
-
-/login #login your account
-
-/logout #logout your account
-
-/comment #comment someone's post
-```
-
-## URL structure BackEnd
-
-```
-/post/:{userID}  #User post.
-
-/get/timeline #User get timeline date.
-
-/get/userpost/:{userID} #User get their own post.
-
-/alert/:{userID} #User get alert date.
-```
